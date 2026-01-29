@@ -1,0 +1,9 @@
+{
+	"name": "adfclassesjan2026",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "0bdf7eaf-d473-4f35-978a-e1e4ef517ae1",
+		"tenantId": "c38823d9-dbb2-433c-a0ec-396b85eb4ce1"
+	}
+}
