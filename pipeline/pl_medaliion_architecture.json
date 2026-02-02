@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Notebook1",
+				"name": "nb_bronze",
 				"type": "DatabricksNotebook",
 				"dependsOn": [],
 				"policy": {
@@ -13,14 +13,23 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/edukron.training@gmail.com/nb_bronze_feb2"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_azure_databricks",
+					"type": "LinkedServiceReference"
+				}
 			},
 			{
-				"name": "Notebook2",
+				"name": "nb_silver",
 				"type": "DatabricksNotebook",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
-						"activity": "Notebook1",
+						"activity": "nb_bronze",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -36,11 +45,13 @@
 				"userProperties": []
 			},
 			{
-				"name": "Notebook3",
+				"name": "nb_gold",
 				"type": "DatabricksNotebook",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
-						"activity": "Notebook2",
+						"activity": "nb_silver",
 						"dependencyConditions": [
 							"Succeeded"
 						]
