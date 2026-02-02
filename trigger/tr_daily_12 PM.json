@@ -1,0 +1,24 @@
+{
+	"name": "tr_daily_12 PM",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pl_medaliion_architecture",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 15,
+				"startTime": "2026-02-02T12:00:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}
