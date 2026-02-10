@@ -1,0 +1,366 @@
+{
+	"name": "ADF_Date_Functions_Demo",
+	"properties": {
+		"activities": [
+			{
+				"name": "CurrentTime",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@utcNow()",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "FormatDate",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "CurrentTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@formatDateTime(utcNow(),'yyyy-MM-dd')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "AddDays",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "FormatDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@addDays(utcNow(),1)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "AddHours",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "AddDays",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@addHours(utcNow(),5)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "AddMinutes",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "AddHours",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@addMinutes(utcNow(),30)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "AddSeconds",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "AddMinutes",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@addSeconds(utcNow(),45)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "AddToTime",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "AddSeconds",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@addToTime(utcNow(),2,'Day')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "StartOfDay",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "AddToTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@startOfDay(utcNow())",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "StartOfMonth",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "StartOfDay",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@startOfMonth(utcNow())",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "EndOfMonth",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "StartOfMonth",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@endOfMonth(utcNow())",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "DayOfMonth",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "EndOfMonth",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@dayOfMonth(utcNow())",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "DayOfWeek",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "DayOfMonth",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@dayOfWeek(utcNow())",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "DayOfYear",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "DayOfWeek",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@dayOfYear(utcNow())",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ConvertTimeZone",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "DayOfYear",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@convertTimeZone(utcNow(),'UTC','India Standard Time')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Ticks",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ConvertTimeZone",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@ticks(utcNow())",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"Result": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
