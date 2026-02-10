@@ -12,6 +12,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
@@ -20,10 +21,7 @@
 					},
 					"dataset": {
 						"referenceName": "ds_bulk_load_azuresql",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "dummy"
-						}
+						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
 				}
