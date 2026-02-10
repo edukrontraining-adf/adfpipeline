@@ -14,6 +14,15 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_bulk_load_azuresql",
+						"type": "DatasetReference"
+					},
 					"firstRowOnly": false
 				}
 			},
