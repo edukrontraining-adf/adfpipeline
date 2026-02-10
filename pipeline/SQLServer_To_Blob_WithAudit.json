@@ -1,6 +1,292 @@
 {
-	"name": "SQL_Server_Blob_With_Notifications",
+	"name": "SQLServer_To_Blob_WithAudit",
 	"properties": {
+		"activities": [
+			{
+				"name": "LookupStartTime",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT GETDATE() AS StartTime",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_bulk_load_azuresql",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "dummy"
+						}
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "SetStartTime",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "LookupStartTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "StartTime",
+					"value": {
+						"value": "@activity('LookupStartTime').output.firstRow.StartTime",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "LookupTables",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "SetStartTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT TABLE_SCHEMA, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE'",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_bulk_load_azuresql",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "dummy"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEachTable",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "LookupTables",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('LookupTables').output.value",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"batchCount": 5,
+					"activities": [
+						{
+							"name": "CopyEachTableToBlob",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT * FROM ', item().TABLE_SCHEMA, '.', item().TABLE_NAME)",
+										"type": "Expression"
+									},
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".csv"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_bulk_load_azuresql",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": "@item().TABLE_NAME"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_blobstorage",
+									"type": "DatasetReference",
+									"parameters": {
+										"FileName": "@concat(item().TABLE_SCHEMA,'_',item().TABLE_NAME,'.csv')"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "LookupEndTime",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "ForEachTable",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT GETDATE() AS EndTime",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_bulk_load_azuresql",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "dummy"
+						}
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "SetEndTime",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "LookupEndTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "EndTime",
+					"value": {
+						"value": "@activity('LookupEndTime').output.firstRow.EndTime",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "WriteAuditToSQL",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "SetEndTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "sp_InsertPipelineAudit",
+					"storedProcedureParameters": {
+						"PipelineName": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							}
+						},
+						"RunId": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							}
+						},
+						"StartTime": {
+							"value": {
+								"value": "@variables('StartTime')",
+								"type": "Expression"
+							}
+						},
+						"EndTime": {
+							"value": {
+								"value": "@variables('EndTime')",
+								"type": "Expression"
+							}
+						},
+						"DurationSeconds": {
+							"value": {
+								"value": "@div(sub(ticks(variables('EndTime')),ticks(variables('StartTime'))),10000000)",
+								"type": "Expression"
+							}
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_azure_sql_database",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"variables": {
+			"StartTime": {
+				"type": "String"
+			},
+			"EndTime": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
