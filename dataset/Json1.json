@@ -5,6 +5,9 @@
 			"referenceName": "ls_azureblob",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "old datasets"
+		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {

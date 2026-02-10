@@ -1,19 +1,25 @@
 {
-	"name": "ds_scd_blob",
+	"name": "ds_bul_load_blob",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_azure_blob_storage",
 			"type": "LinkedServiceReference"
 		},
-		"folder": {
-			"name": "old datasets"
+		"parameters": {
+			"FileName": {
+				"type": "String"
+			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Contacts.csv",
+				"fileName": {
+					"value": "@dataset().FileName",
+					"type": "Expression"
+				},
+				"folderPath": "sqltables",
 				"container": "source"
 			},
 			"columnDelimiter": ",",
@@ -21,23 +27,6 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": [
-			{
-				"name": "CustomerID",
-				"type": "String"
-			},
-			{
-				"name": "CustomerName",
-				"type": "String"
-			},
-			{
-				"name": "City",
-				"type": "String"
-			},
-			{
-				"name": "EffectiveDate",
-				"type": "String"
-			}
-		]
+		"schema": []
 	}
 }

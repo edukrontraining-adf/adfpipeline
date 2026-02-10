@@ -1,6 +1,9 @@
 {
 	"name": "ADF_Conversion_Functions_Demo",
 	"properties": {
+		"folder": {
+			"name": "1-10 Scenarios"
+		},
 		"annotations": []
 	}
 }

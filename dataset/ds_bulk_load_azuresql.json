@@ -1,0 +1,23 @@
+{
+	"name": "ds_bulk_load_azuresql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_sql_database",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"TableName": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
+		}
+	}
+}

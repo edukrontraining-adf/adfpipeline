@@ -5,6 +5,15 @@
 			"referenceName": "ls_azureblob",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"FileName": {
+				"type": "string",
+				"defaultValue": "@dataset().FileName"
+			}
+		},
+		"folder": {
+			"name": "old datasets"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {

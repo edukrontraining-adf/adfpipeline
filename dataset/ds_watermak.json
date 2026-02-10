@@ -5,6 +5,9 @@
 			"referenceName": "ls_azure_sql_database",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "old datasets"
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [
