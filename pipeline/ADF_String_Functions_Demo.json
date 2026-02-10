@@ -1,0 +1,198 @@
+{
+	"name": "ADF_String_Functions_Demo",
+	"properties": {
+		"activities": [
+			{
+				"name": "Concat_Demo",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@concat('Azure',' ','Data',' ','Factory')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Substring_Demo",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Concat_Demo",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@substring('AzureDataFactory',0,5)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Replace_Demo",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Substring_Demo",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@replace('ADF Dev Pipeline','Dev','Prod')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Upper_Demo",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Replace_Demo",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@toUpper('azure data factory')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Lower_Demo",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Upper_Demo",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@toLower('AZURE DATA FACTORY')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Trim_Demo",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lower_Demo",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@trim('  ADF Pipeline  ')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Contains_Demo",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Trim_Demo",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@string(contains('Azure Data Factory','Data'))\n",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Length_Demo",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Contains_Demo",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@length('AzureADF')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"Result": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}

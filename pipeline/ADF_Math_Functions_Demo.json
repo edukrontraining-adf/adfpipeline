@@ -1,0 +1,246 @@
+{
+	"name": "ADF_Math_Functions_Demo",
+	"properties": {
+		"activities": [
+			{
+				"name": "Addition",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@string(add(10,5))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Subtraction",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Addition",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@string(sub(15,5))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Multiply",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Subtraction",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@string(mul(3,4))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Divide",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Multiply",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@string(div(20,5))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Modulo",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Divide",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@string(mod(20,3))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Maximum",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Modulo",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@string(max(10,50))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Minimum",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Maximum",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@string(min(10,50))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "RandomNumber",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Minimum",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@string(rand(1,100))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "IntConversion",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "RandomNumber",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@string(int('25'))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "FloatConversion",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "IntConversion",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@string(float('10.75'))",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"Result": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}

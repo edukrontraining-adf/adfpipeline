@@ -1,0 +1,78 @@
+{
+	"name": "ADF_Logical_Functions_Demo",
+	"properties": {
+		"activities": [
+			{
+				"name": "EqualsDemo",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@string(equals(10,10))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "GreaterDemo",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "EqualsDemo",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@string(greater(20,10))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "AndDemo",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GreaterDemo",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Result",
+					"value": {
+						"value": "@string(and(true,true))",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"Result": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
