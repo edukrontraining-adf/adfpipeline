@@ -1,11 +1,18 @@
 {
-	"name": "pl_incremental_loading",
+	"name": "pl_notifications",
 	"properties": {
 		"activities": [
 			{
 				"name": "LookupOldWaterMarkActivity",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable1_copy2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -165,11 +172,11 @@
 				}
 			},
 			{
-				"name": "Script1",
+				"name": "email alerts",
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Stored procedure1",
+						"activity": "Set variable1_copy1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -183,12 +190,73 @@
 					"secureInput": false
 				},
 				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_azure_sql_database",
+					"type": "LinkedServiceReference"
+				},
 				"typeProperties": {
-					"scripts": [],
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "insert into PipelineRunStatus values (\n'@{pipeline().Pipeline}',\n'@{pipeline().RunId}',\n'@{formatDateTime(pipeline().TriggerTime,'yyyy-MM-dd HH:mm:ss')}',\n'@{pipeline().TriggerType}',\ndatediff(second,@{variables('starttime')}, @{variables('endtime')})\n)\n",
+								"type": "Expression"
+							}
+						}
+					],
 					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "Set variable1_copy1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Stored procedure1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "endtime",
+					"value": {
+						"value": "@utcNow()",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable1_copy2",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "starttime",
+					"value": {
+						"value": "@utcNow()",
+						"type": "Expression"
+					}
 				}
 			}
 		],
+		"variables": {
+			"starttime": {
+				"type": "String"
+			},
+			"endtime": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
