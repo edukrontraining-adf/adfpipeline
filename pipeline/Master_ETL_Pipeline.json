@@ -1,0 +1,24 @@
+{
+	"name": "Master_ETL_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute_SQL_To_Blob_Pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "ADF_Logical_Functions_Demo",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"annotations": []
+	}
+}
