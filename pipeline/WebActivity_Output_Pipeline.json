@@ -1,0 +1,53 @@
+{
+	"name": "WebActivity_Output_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Call_API",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": "https://jsonplaceholder.typicode.com/posts/1"
+				}
+			},
+			{
+				"name": "Show_API_Output",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Call_API",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "apiOutput",
+					"value": {
+						"value": "@string(activity('Call_API').output)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"apiOutput": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}

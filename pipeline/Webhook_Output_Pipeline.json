@@ -1,0 +1,54 @@
+{
+	"name": "Webhook_Output_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Trigger_Webhook",
+				"type": "WebHook",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://your-logicapp-url",
+					"method": "POST",
+					"body": {
+						"message": "ADF Pipeline Triggered"
+					}
+				}
+			},
+			{
+				"name": "Show_Webhook_Output",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Trigger_Webhook",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "webhookOutput",
+					"value": {
+						"value": "@string(activity('Trigger_Webhook').output)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"webhookOutput": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
