@@ -22,7 +22,7 @@
 						{
 							"type": "Query",
 							"text": {
-								"value": "SELECT TOP 10 * FROM @{dataset().TableName}",
+								"value": "SELECT TOP 10 * FROM @{pipeline().parameters.TableName}",
 								"type": "Expression"
 							}
 						}
@@ -31,6 +31,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"TableName": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
