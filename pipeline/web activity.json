@@ -1,0 +1,25 @@
+{
+	"name": "web activity",
+	"properties": {
+		"activities": [
+			{
+				"name": "TempWebActivity",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": "http://api.openweathermap.org/data/2.5/weather?appid=30d2e4f9114c412310bc7b361aed5f7a&q=Bangalore"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
