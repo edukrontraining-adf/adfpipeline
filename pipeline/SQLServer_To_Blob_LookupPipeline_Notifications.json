@@ -21,7 +21,10 @@
 					},
 					"dataset": {
 						"referenceName": "ds_bulk_load_azuresql",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "tablename"
+						}
 					},
 					"firstRowOnly": false
 				}
