@@ -1,0 +1,67 @@
+{
+	"name": "pl_AppendVariablePipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "AppendValue1",
+				"type": "AppendVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "tableList",
+					"value": "Customers"
+				}
+			},
+			{
+				"name": "AppendValue2",
+				"type": "AppendVariable",
+				"dependsOn": [
+					{
+						"activity": "AppendValue1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "tableList",
+					"value": "Orders"
+				}
+			},
+			{
+				"name": "ShowOutput",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "AppendValue2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "outputValue",
+					"value": {
+						"value": "@join(variables('tableList'), ', ')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"tableList": {
+				"type": "Array"
+			},
+			"outputValue": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
