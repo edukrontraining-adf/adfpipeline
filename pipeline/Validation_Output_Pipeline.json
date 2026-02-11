@@ -1,0 +1,51 @@
+{
+	"name": "Validation_Output_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Validate_File",
+				"type": "Validation",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_delete_activity",
+						"type": "DatasetReference"
+					},
+					"timeout": "00:10:00",
+					"sleep": 10
+				}
+			},
+			{
+				"name": "Show_Validation_Output",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Validate_File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "validationOutput",
+					"value": {
+						"value": "@string(activity('Validate_File').output)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"validationOutput": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}

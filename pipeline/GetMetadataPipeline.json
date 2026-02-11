@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "GetBlobFileMetadata",
+				"name": "GetFileMetadata",
 				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
@@ -31,8 +31,37 @@
 						"type": "DelimitedTextReadSettings"
 					}
 				}
+			},
+			{
+				"name": "ShowMetadataOutput",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetFileMetadata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "metadataOutput",
+					"value": {
+						"value": "@string(activity('GetFileMetadata').output)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"variables": {
+			"metadataOutput": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }

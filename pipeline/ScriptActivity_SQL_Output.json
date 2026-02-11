@@ -1,0 +1,61 @@
+{
+	"name": "ScriptActivity_SQL_Output",
+	"properties": {
+		"activities": [
+			{
+				"name": "Run_SQL_Script",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_azure_sql_database",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "SELECT COUNT(*) AS TotalCustomers FROM SalesLT.Customer"
+						}
+					]
+				}
+			},
+			{
+				"name": "Show_Output",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Run_SQL_Script",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "scriptOutput",
+					"value": {
+						"value": "@string(activity('Run_SQL_Script').output.resultSets)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"scriptOutput": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
