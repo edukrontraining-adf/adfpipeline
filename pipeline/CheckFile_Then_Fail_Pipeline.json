@@ -1,0 +1,67 @@
+{
+	"name": "CheckFile_Then_Fail_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Check_File_Exists",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_delete_activity",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"exists"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "FileExistsCondition",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Check_File_Exists",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('Check_File_Exists').output.exists, false)",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "FailIfFileMissing",
+							"type": "Fail",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "File not found in Blob Storage",
+								"errorCode": "FILE_MISSING"
+							}
+						}
+					]
+				}
+			}
+		],
+		"annotations": []
+	}
+}
