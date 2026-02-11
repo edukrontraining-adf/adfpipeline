@@ -15,21 +15,14 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "ds_delete_activity",
+						"referenceName": "ds_AzureSqlTable",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
 						"exists",
-						"size",
-						"lastModified"
-					],
-					"storeSettings": {
-						"type": "AzureBlobStorageReadSettings",
-						"enablePartitionDiscovery": false
-					},
-					"formatSettings": {
-						"type": "DelimitedTextReadSettings"
-					}
+						"columnCount",
+						"structure"
+					]
 				}
 			},
 			{
