@@ -17,8 +17,8 @@
 				}
 			},
 			{
-				"name": "Show_Validation_Output",
-				"type": "SetVariable",
+				"name": "Check file Status",
+				"type": "IfCondition",
 				"dependsOn": [
 					{
 						"activity": "Validate_File",
@@ -27,17 +27,42 @@
 						]
 					}
 				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "validationOutput",
-					"value": {
-						"value": "@string(activity('Validate_File').output)",
-						"type": "Expression"
-					}
+					"ifFalseActivities": [
+						{
+							"name": "Sent Email Notification",
+							"type": "WebHook",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "POST",
+								"timeout": "00:10:00"
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Move files from blob to sqlserver",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"enableStaging": false
+							}
+						}
+					]
 				}
 			}
 		],
