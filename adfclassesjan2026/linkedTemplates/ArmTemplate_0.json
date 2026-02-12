@@ -1812,6 +1812,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "1-10 Scenarios"
+				},
 				"annotations": []
 			},
 			"dependsOn": []
@@ -1871,6 +1874,9 @@
 					"apiOutput": {
 						"type": "String"
 					}
+				},
+				"folder": {
+					"name": "1-10 Scenarios"
 				},
 				"annotations": []
 			},
@@ -1932,6 +1938,9 @@
 					"webhookOutput": {
 						"type": "String"
 					}
+				},
+				"folder": {
+					"name": "1-10 Scenarios"
 				},
 				"annotations": []
 			},
@@ -2006,6 +2015,9 @@
 						"type": "String"
 					}
 				},
+				"folder": {
+					"name": "1-10 Scenarios"
+				},
 				"annotations": []
 			},
 			"dependsOn": []
@@ -2037,6 +2049,9 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "1-10 Scenarios"
 				},
 				"annotations": []
 			},
@@ -2177,6 +2192,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "1-10 Scenarios"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -2225,6 +2243,9 @@
 					"TableName": {
 						"type": "string"
 					}
+				},
+				"folder": {
+					"name": "1-10 Scenarios"
 				},
 				"annotations": []
 			},
