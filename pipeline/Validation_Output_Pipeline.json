@@ -29,6 +29,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"expression": {
+						"value": "@activity('Move files from blob to sqlserver').output",
+						"type": "Expression"
+					},
 					"ifFalseActivities": [
 						{
 							"name": "Sent Email Notification",
@@ -40,7 +44,8 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"method": "POST",
+								"url": "www.google.com",
+								"body": "hi this is test",
 								"timeout": "00:10:00"
 							}
 						}
@@ -59,8 +64,56 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"enableStaging": false
-							}
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_blobstorage",
+									"type": "DatasetReference",
+									"parameters": {
+										"FileName": "@dataset().FileName"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_blobstorage",
+									"type": "DatasetReference",
+									"parameters": {
+										"FileName": "@dataset().FileName"
+									}
+								}
+							]
 						}
 					]
 				}
