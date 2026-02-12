@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_scd_azuresql",
+						"referenceName": "ds_dataflowdemo",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
@@ -29,15 +29,26 @@
 			"scriptLines": [
 				"source(output(",
 				"          CustomerID as integer,",
-				"          CustomerName as string,",
-				"          City as string,",
-				"          EffectiveDate as timestamp",
+				"          NameStyle as boolean,",
+				"          Title as string,",
+				"          FirstName as string,",
+				"          MiddleName as string,",
+				"          LastName as string,",
+				"          Suffix as string,",
+				"          CompanyName as string,",
+				"          SalesPerson as string,",
+				"          EmailAddress as string,",
+				"          Phone as string,",
+				"          PasswordHash as string,",
+				"          PasswordSalt as string,",
+				"          rowguid as string,",
+				"          ModifiedDate as timestamp",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> source1",
-				"source1 derive(MaskName = concat(left(CustomerName,3),'****@',split(CustomerName,'@')[1])) ~> derivedColumn1",
+				"source1 derive(MaskName = concat(left(EmailAddress,3),'****')) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
