@@ -65,6 +65,9 @@
 				}
 			}
 		],
+		"folder": {
+			"name": "1-10 Scenarios"
+		},
 		"annotations": []
 	}
 }
