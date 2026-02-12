@@ -2,8 +2,15 @@
 	"name": "tr_daily_12 PM",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
-		"pipelines": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Validation_Output_Pipeline",
+					"type": "PipelineReference"
+				}
+			}
+		],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {

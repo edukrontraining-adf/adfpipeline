@@ -45,6 +45,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"url": "www.google.com",
+								"method": "POST",
 								"body": "hi this is test",
 								"timeout": "00:10:00"
 							}
