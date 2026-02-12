@@ -11,6 +11,9 @@
 		"ls_azure_blob_storage_connectionString": {
 			"value": ""
 		},
+		"ls_azure_databricks_accessToken": {
+			"value": ""
+		},
 		"ls_azure_sql_database_password": {
 			"value": ""
 		},

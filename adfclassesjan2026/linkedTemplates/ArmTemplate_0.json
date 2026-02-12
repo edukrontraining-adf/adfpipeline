@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_azure_blob_storage'"
 		},
+		"ls_azure_databricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'ls_azure_databricks'"
+		},
 		"ls_azure_sql_database_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_azure_sql_database'"
@@ -53,6 +57,1992 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/ADF_Date_Functions_Demo')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CurrentTime",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@utcNow()",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "FormatDate",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "CurrentTime",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@formatDateTime(utcNow(),'yyyy-MM-dd')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "AddDays",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "FormatDate",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@addDays(utcNow(),1)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "AddHours",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "AddDays",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@addHours(utcNow(),5)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "AddMinutes",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "AddHours",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@addMinutes(utcNow(),30)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "AddSeconds",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "AddMinutes",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@addSeconds(utcNow(),45)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "AddToTime",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "AddSeconds",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@addToTime(utcNow(),2,'Day')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "StartOfDay",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "AddToTime",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@startOfDay(utcNow())",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "StartOfMonth",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "StartOfDay",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@startOfMonth(utcNow())",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "EndOfMonth",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "StartOfMonth",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@endOfMonth(utcNow())",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "DayOfMonth",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "EndOfMonth",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@dayOfMonth(utcNow())",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "DayOfWeek",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "DayOfMonth",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@dayOfWeek(utcNow())",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "DayOfYear",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "DayOfWeek",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@dayOfYear(utcNow())",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ConvertTimeZone",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "DayOfYear",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@convertTimeZone(utcNow(),'UTC','India Standard Time')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Ticks",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "ConvertTimeZone",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@ticks(utcNow())",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"Result": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "1-10 Scenarios"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ADF_Logical_Functions_Demo')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "EqualsDemo",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(equals(10,10))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "GreaterDemo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "EqualsDemo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(greater(20,10))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "AndDemo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GreaterDemo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(and(true,true))",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"Result": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "1-10 Scenarios"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ADF_Math_Functions_Demo')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Addition",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(add(10,5))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Subtraction",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Addition",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(sub(15,5))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Multiply",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Subtraction",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(mul(3,4))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Divide",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Multiply",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(div(20,5))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Modulo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Divide",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(mod(20,3))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Maximum",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Modulo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(max(10,50))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Minimum",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Maximum",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(min(10,50))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "RandomNumber",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Minimum",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(rand(1,100))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "IntConversion",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "RandomNumber",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(int('25'))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "FloatConversion",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "IntConversion",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(float('10.75'))",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"Result": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "1-10 Scenarios"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ADF_String_Functions_Demo')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Concat_Demo",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@concat('Azure',' ','Data',' ','Factory')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Substring_Demo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Concat_Demo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@substring('AzureDataFactory',0,5)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Replace_Demo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Substring_Demo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@replace('ADF Dev Pipeline','Dev','Prod')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Upper_Demo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Replace_Demo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@toUpper('azure data factory')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Lower_Demo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Upper_Demo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@toLower('AZURE DATA FACTORY')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Trim_Demo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Lower_Demo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@trim('  ADF Pipeline  ')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Contains_Demo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Trim_Demo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(contains('Azure Data Factory','Data'))\n",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Length_Demo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Contains_Demo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@length('AzureADF')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"Result": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "1-10 Scenarios"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pl_ADF_String_Functions_Demo')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Concat_Demo",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@concat('Azure',' ','Data',' ','Factory')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Substring_Demo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Concat_Demo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@substring('AzureDataFactory',0,5)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Replace_Demo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Substring_Demo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@replace('ADF Dev Pipeline','Dev','Prod')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Upper_Demo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Replace_Demo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@toUpper('azure data factory')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Lower_Demo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Upper_Demo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@toLower('AZURE DATA FACTORY')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Trim_Demo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Lower_Demo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@trim('  ADF Pipeline  ')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Contains_Demo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Trim_Demo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(contains('Azure Data Factory','Data'))\n",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Length_Demo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Contains_Demo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(length('adf'))",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"Result": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "1-10 Scenarios"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pl_Date_Functions_Demo')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CurrentTime",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@utcNow()",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "FormatDate",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "CurrentTime",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@formatDateTime(utcNow(),'yyyy-MM-dd')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "AddDays",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "FormatDate",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@addDays(utcNow(),1)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "AddHours",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "AddDays",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@addHours(utcNow(),5)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "AddMinutes",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "AddHours",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@addMinutes(utcNow(),30)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "AddSeconds",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "AddMinutes",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@addSeconds(utcNow(),45)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "AddToTime",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "AddSeconds",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@addToTime(utcNow(),2,'Day')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "StartOfDay",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "AddToTime",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@startOfDay(utcNow())",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "StartOfMonth",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "StartOfDay",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@startOfMonth(utcNow())",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "EndOfMonth",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "StartOfMonth",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@endOfMonth(utcNow())",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "DayOfMonth",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "EndOfMonth",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@dayOfMonth(utcNow())",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "DayOfWeek",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "DayOfMonth",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@dayOfWeek(utcNow())",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "DayOfYear",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "DayOfWeek",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@dayOfYear(utcNow())",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ConvertTimeZone",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "DayOfYear",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@convertTimeZone(utcNow(),'UTC','India Standard Time')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"Result": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "1-10 Scenarios"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pl_Math_Functions')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Addition",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(add(10,5))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Subtraction",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Addition",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(sub(15,5))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Multiply",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Subtraction",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(mul(3,4))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Divide",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Multiply",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(div(20,5))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Modulo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Divide",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(mod(20,3))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Maximum",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Modulo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(max(10,50))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Minimum",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Maximum",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(min(10,50))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "RandomNumber",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Minimum",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(rand(1,100))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "IntConversion",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "RandomNumber",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(int('25'))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "FloatConversion",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "IntConversion",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Result",
+							"value": {
+								"value": "@string(float('10.75'))",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"Result": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "1-10 Scenarios"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Simple_Wait_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Wait_30_Seconds",
+						"type": "Wait",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 30
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/WebActivity_Output_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Call_API",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "GET",
+							"headers": {},
+							"url": "https://jsonplaceholder.typicode.com/posts/1"
+						}
+					},
+					{
+						"name": "Show_API_Output",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Call_API",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "apiOutput",
+							"value": {
+								"value": "@string(activity('Call_API').output)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"apiOutput": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Webhook_Output_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Trigger_Webhook",
+						"type": "WebHook",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://your-logicapp-url",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"message": "ADF Pipeline Triggered"
+							}
+						}
+					},
+					{
+						"name": "Show_Webhook_Output",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Trigger_Webhook",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "webhookOutput",
+							"value": {
+								"value": "@string(activity('Trigger_Webhook').output)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"webhookOutput": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_AppendVariablePipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "AppendValue1",
+						"type": "AppendVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "tableList",
+							"value": "Customers"
+						}
+					},
+					{
+						"name": "AppendValue2",
+						"type": "AppendVariable",
+						"dependsOn": [
+							{
+								"activity": "AppendValue1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "tableList",
+							"value": "Orders"
+						}
+					},
+					{
+						"name": "ShowOutput",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "AppendValue2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "outputValue",
+							"value": {
+								"value": "@join(variables('tableList'), ', ')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"tableList": {
+						"type": "Array"
+					},
+					"outputValue": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/web activity')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "TempWebActivity",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "GET",
+							"headers": {},
+							"url": "http://api.openweathermap.org/data/2.5/weather?appid=30d2e4f9114c412310bc7b361aed5f7a&q=Bangalore"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -83,6 +2073,23 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('ls_azure_blob_storage_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_azure_databricks')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-7405618018840770.10.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('ls_azure_databricks_accessToken')]"
+					}
 				}
 			},
 			"dependsOn": []
@@ -124,29 +2131,46 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"name": "[concat(parameters('factoryName'), '/tr_daily_12 PM')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 15,
+						"startTime": "2026-02-02T12:00:00",
+						"timeZone": "India Standard Time"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Master_ETL_Pipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Stored procedure1",
-						"type": "SqlServerStoredProcedure",
+						"name": "Execute_SQL_To_Blob_Pipeline",
+						"type": "ExecutePipeline",
 						"dependsOn": [],
 						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
 							"secureInput": false
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"storedProcedureName": "[[dbo].[sp_scd2_expire]"
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDatabase1",
-							"type": "LinkedServiceReference"
+							"pipeline": {
+								"referenceName": "ADF_Logical_Functions_Demo",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
 						}
 					}
 				],
@@ -156,690 +2180,55 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+				"[concat(variables('factoryId'), '/pipelines/ADF_Logical_Functions_Demo')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"name": "[concat(parameters('factoryName'), '/Run_SQL_Script_Pipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Stored procedure1",
-						"type": "SqlServerStoredProcedure",
+						"name": "Run_SQL_Script",
+						"type": "Script",
 						"dependsOn": [],
 						"policy": {
-							"timeout": "0.12:00:00",
 							"retry": 0,
 							"retryIntervalInSeconds": 30,
 							"secureOutput": false,
 							"secureInput": false
 						},
 						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[sp_scd2_insert]"
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDatabase1",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Json1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_azureblob",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "destination"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azureblob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_AzureSqlTable')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "PersonID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Name",
-						"type": "varchar"
-					},
-					{
-						"name": "LastModifytime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "data_source_table"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_blobstorage')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_azureblob",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@CONCAT('Incremental-', pipeline().RunId, '.txt')",
-							"type": "Expression"
-						},
-						"container": "destination"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azureblob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_scd_azuresql')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_azure_sql_database",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "CustomerID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "CustomerName",
-						"type": "varchar"
-					},
-					{
-						"name": "City",
-						"type": "varchar"
-					},
-					{
-						"name": "EffectiveDate",
-						"type": "datetime2",
-						"scale": 7
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "StgCustomer"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azure_sql_database')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_scd_blob')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_azure_blob_storage",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "Contacts.csv",
-						"container": "source"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "CustomerID",
-						"type": "String"
-					},
-					{
-						"name": "CustomerName",
-						"type": "String"
-					},
-					{
-						"name": "City",
-						"type": "String"
-					},
-					{
-						"name": "EffectiveDate",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azure_blob_storage')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_watermak')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_azure_sql_database",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "TableName",
-						"type": "varchar"
-					},
-					{
-						"name": "WatermarkValue",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "watermarktable"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azure_sql_database')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Incremental Pipeline')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "LookupOldWaterMarkActivity",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "ds_watermak",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "LookupNewWaterMarkActivity",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select MAX(LastModifytime) as NewWatermarkvalue from data_source_table",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "ds_AzureSqlTable",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "IncrementalCopyActivity",
-						"description": "select * from data_source_table where LastModifytime > '@{activity('LookupOldWaterMarkActivity').output.firstRow.WatermarkValue}' and LastModifytime <= '@{activity('LookupNewWaterMarkActivity').output.firstRow.NewWatermarkvalue}'",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "LookupOldWaterMarkActivity",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "LookupNewWaterMarkActivity",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_AzureSqlTable",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_blobstorage",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Stored procedure1",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "IncrementalCopyActivity",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[usp_write_watermark]",
-							"storedProcedureParameters": {
-								"LastModifiedtime": {
-									"value": {
-										"value": "@{activity('LookupNewWaterMarkActivity').output.firstRow.NewWatermarkvalue}\n",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"TableName": {
-									"value": {
-										"value": "@{activity('LookupOldWaterMarkActivity').output.firstRow.TableName}\n",
-										"type": "Expression"
-									},
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDatabase1",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2026-01-29T12:04:49Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_watermak')]",
-				"[concat(variables('factoryId'), '/datasets/ds_AzureSqlTable')]",
-				"[concat(variables('factoryId'), '/datasets/ds_blobstorage')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_sql_blob_incremental')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"preCopyScript": "TRUNCATE TABLE dbo.StgCustomer;\n",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_scd_blob",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_scd_azuresql",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_scd_blob')]",
-				"[concat(variables('factoryId'), '/datasets/ds_scd_azuresql')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_incremental_loading')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "LookupOldWaterMarkActivity",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "ds_watermak",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "LookupNewWaterMarkActivity",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select MAX(LastModifytime) as NewWatermarkvalue from data_source_table",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "ds_AzureSqlTable",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "IncrementalCopyActivity",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "LookupOldWaterMarkActivity",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "LookupNewWaterMarkActivity",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": {
-									"value": "select * from data_source_table where LastModifytime > '@{activity('LookupOldWaterMarkActivity').output.firstRow.WatermarkValue}' and LastModifytime <= '@{activity('LookupNewWaterMarkActivity').output.firstRow.NewWatermarkvalue}'",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_AzureSqlTable",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_blobstorage",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Stored procedure1",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "IncrementalCopyActivity",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[usp_write_watermark]",
-							"storedProcedureParameters": {
-								"LastModifiedtime": {
-									"value": {
-										"value": "@{activity('LookupNewWaterMarkActivity').output.firstRow.NewWatermarkvalue}\n",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"TableName": {
-									"value": {
-										"value": "@{activity('LookupOldWaterMarkActivity').output.firstRow.TableName}\n",
-										"type": "Expression"
-									},
-									"type": "String"
-								}
-							}
-						},
 						"linkedServiceName": {
 							"referenceName": "ls_azure_sql_database",
 							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": {
+										"value": "SELECT TOP 10 * FROM @{pipeline().parameters.TableName}",
+										"type": "Expression"
+									}
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
 						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"parameters": {
+					"TableName": {
+						"type": "string"
+					}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_watermak')]",
-				"[concat(variables('factoryId'), '/datasets/ds_AzureSqlTable')]",
-				"[concat(variables('factoryId'), '/datasets/ds_blobstorage')]",
 				"[concat(variables('factoryId'), '/linkedServices/ls_azure_sql_database')]"
 			]
 		}
